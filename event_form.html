@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PLRS Event Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0d0f12;
+      color: #e8e8e8;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 600;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      background: #151922;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 16px;
+      background: #1c6bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1556cc;
+    }
+    pre {
+      margin-top: 20px;
+      background: #151922;
+      padding: 12px;
+      overflow-x: auto;
+      border-radius: 6px;
+      border: 1px solid #333;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<h1>PLRS Event Generator (Local Only)</h1>
+
+<label>Event ID (E###)</label>
+<input id="event_id" placeholder="E001" />
+
+<label>Raw Timestamp (Any Format)</label>
+<input id="timestamp_raw" placeholder="12/07/2025 8:14 PM" />
+
+<label>Location ID (L###)</label>
+<input id="location_id" placeholder="L001" />
+
+<label>Subjects Involved (comma separated S###)</label>
+<input id="subjects" placeholder="S001,S002" />
+
+<label>Reporter ID (R###)</label>
+<input id="reporter_id" placeholder="R001" />
+
+<label>Event Type</label>
+<input id="event_type" placeholder="Visitation_Denial" />
+
+<label>Narrative Statement</label>
+<textarea id="narrative" rows="4"></textarea>
+
+<label>Evidence Hashes (comma separated)</label>
+<input id="hashes" placeholder="b6d81b360a5672d80c27430f39153e2c" />
+
+<label>Public Visibility (true / false)</label>
+<input id="visibility" placeholder="true" />
+
+<label>Challenge Window (Days)</label>
+<input id="challenge_days" type="number" value="14" />
+
+<button onclick="generateEvent()">Generate Canonical Event</button>
+
+<pre id="output"></pre>
+
+<script>
+function generateEvent() {
+  const event = {
+    Event_ID: document.getElementById("event_id").value.trim(),
+    Timestamp_RAW: document.getElementById("timestamp_raw").value.trim(),
+    Location_ID: document.getElementById("location_id").value.trim(),
+    Subjects_Involved: document.getElementById("subjects").value.split(",").map(s => s.trim()),
+    Reporter_ID: document.getElementById("reporter_id").value.trim(),
+    Event_Type: document.getElementById("event_type").value.trim(),
+    Narrative_Statement: document.getElementById("narrative").value.trim(),
+    Evidence_Hashes: document.getElementById("hashes").value.split(",").map(h => h.trim()),
+    Public_Visibility: document.getElementById("visibility").value.trim().toLowerCase() === "true",
+    Challenge_Window_Days: parseInt(document.getElementById("challenge_days").value, 10),
+    Immutable_Flag: true,
+    Referenced_Event: null,
+    Version: "1.0"
+  };
+
+  document.getElementById("output").textContent = JSON.stringify(event, null, 2);
+}
+</script>
+
+</body>
+</html>
