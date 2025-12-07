@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://plrs.org/schema/challenge.json",
+  "title": "Public Legal Record System — Challenge Event Schema",
+  "description": "Validation schema for formal Challenges submitted against existing PLRS Events.",
+  "type": "object",
+  "additionalProperties": false,
+
+  "properties": {
+    "Challenge_ID": {
+      "type": "string",
+      "pattern": "^C\\d{3,}$",
+      "description": "Unique identifier for this Challenge (e.g., C001)."
+    },
+
+    "Challenged_Event_ID": {
+      "type": "string",
+      "pattern": "^E\\d{3,}$",
+      "description": "The Event_ID this Challenge is formally contesting."
+    },
+
+    "Timestamp_UTC": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Canonical UTC timestamp of when the Challenge was submitted."
+    },
+
+    "Challenger_ID": {
+      "type": "string",
+      "pattern": "^R\\d{3,}$",
+      "description": "Reporter_ID of the party submitting the Challenge."
+    },
+
+    "Challenger_Role": {
+      "type": "string",
+      "enum": [
+        "Parent",
+        "Child",
+        "Witness",
+        "Legal_Representative",
+        "Official",
+        "ThirdParty"
+      ]
+    },
+
+    "Challenge_Type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Machine-readable classification of the challenge (e.g., False_Statement, Timeline_Error, Evidence_Dispute)."
+    },
+
+    "Challenge_Statement": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable statement explaining what is being contested and why."
+    },
+
+    "Evidence_Hashes": {
+      "type": "array",
+      "description": "Optional cryptographic hashes of evidence supporting this Challenge.",
+      "minItems": 0,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Fa-f0-9]{32,128}$"
+      }
+    },
+
+    "Public_Visibility": {
+      "type": "boolean",
+      "description": "If true, the Challenge is publicly viewable. If false, only its existence is visible in the index."
+    },
+
+    "Immutable_Flag": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must always be true. Challenges are immutable once published."
+    },
+
+    "Version": {
+      "type": "string",
+      "pattern": "^1\\.0$",
+      "description": "Challenge schema version."
+    }
+  },
+
+  "required": [
+    "Challenge_ID",
+    "Challenged_Event_ID",
+    "Timestamp_UTC",
+    "Challenger_ID",
+    "Challenger_Role",
+    "Challenge_Type",
+    "Challenge_Statement",
+    "Public_Visibility",
+    "Immutable_Flag",
+    "Version"
+  ]
+}
