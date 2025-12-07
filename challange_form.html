@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PLRS Challenge Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0d0f12;
+      color: #e8e8e8;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 600;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      background: #151922;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 14px;
+      padding: 10px 16px;
+      background: #b03cff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button:hover {
+      background: #8f2ed1;
+    }
+    pre {
+      margin-top: 20px;
+      background: #151922;
+      padding: 12px;
+      overflow-x: auto;
+      border-radius: 6px;
+      border: 1px solid #333;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<h1>PLRS Challenge Generator (Local Only)</h1>
+
+<label>Challenge ID (C###)</label>
+<input id="challenge_id" placeholder="C001" />
+
+<label>Challenged Event ID (E###)</label>
+<input id="challenged_event_id" placeholder="E001" />
+
+<label>Raw Timestamp (Any Format)</label>
+<input id="timestamp_raw" placeholder="12/08/2025 10:14 AM" />
+
+<label>Challenger ID (R###)</label>
+<input id="challenger_id" placeholder="R002" />
+
+<label>Challenger Role</label>
+<select id="challenger_role">
+  <option>Parent</option>
+  <option>Child</option>
+  <option>Witness</option>
+  <option>Legal_Representative</option>
+  <option>Official</option>
+  <option>ThirdParty</option>
+</select>
+
+<label>Challenge Type</label>
+<input id="challenge_type" placeholder="False_Statement" />
+
+<label>Challenge Statement</label>
+<textarea id="challenge_statement" rows="5"></textarea>
+
+<label>Evidence Hashes (comma separated, optional)</label>
+<input id="hashes" placeholder="a1b2c3d4e5f6..." />
+
+<label>Public Visibility (true / false)</label>
+<input id="visibility" placeholder="true" />
+
+<button onclick="generateChallenge()">Generate Challenge</button>
+<button onclick="downloadChallenge()">Download JSON</button>
+
+<pre id="output"></pre>
+
+<script>
+let lastChallenge = null;
+
+function generateChallenge() {
+  const challenge = {
+    Challenge_ID: document.getElementById("challenge_id").value.trim(),
+    Challenged_Event_ID: document.getElementById("challenged_event_id").value.trim(),
+    Timestamp_RAW: document.getElementById("timestamp_raw").value.trim(),
+    Challenger_ID: document.getElementById("challenger_id").value.trim(),
+    Challenger_Role: document.getElementById("challenger_role").value,
+    Challenge_Type: document.getElementById("challenge_type").value.trim(),
+    Challenge_Statement: document.getElementById("challenge_statement").value.trim(),
+    Evidence_Hashes: document.getElementById("hashes").value.trim()
+      ? document.getElementById("hashes").value.split(",").map(h => h.trim())
+      : [],
+    Public_Visibility: document.getElementById("visibility").value.trim().toLowerCase() === "true",
+    Immutable_Flag: true,
+    Version: "1.0"
+  };
+
+  lastChallenge = challenge;
+  document.getElementById("output").textContent = JSON.stringify(challenge, null, 2);
+}
+
+function downloadChallenge() {
+  if (!lastChallenge) {
+    alert("Generate a challenge first.");
+    return;
+  }
+
+  const blob = new Blob([JSON.stringify(lastChallenge, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = (lastChallenge.Challenge_ID || "PLRS_Challenge") + ".json";
+  document.body.appendChild(a);
+  a.click();
+
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
