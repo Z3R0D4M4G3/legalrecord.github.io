@@ -1,0 +1,20 @@
+{
+  "Event_ID": "E001",
+  "Timestamp_UTC": "2025-12-07T20:14:33Z",
+  "Location_ID": "L001",
+  "Subjects_Involved": [
+    "S001",
+    "S002"
+  ],
+  "Reporter_ID": "R001",
+  "Event_Type": "Visitation_Denial",
+  "Narrative_Statement": "On 2025-12-07T20:14:33Z, Child_1 was denied scheduled visitation at Location_1 despite a standing court order permitting visits.",
+  "Evidence_Hashes": [
+    "b6d81b360a5672d80c27430f39153e2c"
+  ],
+  "Public_Visibility": true,
+  "Challenge_Window_Days": 14,
+  "Immutable_Flag": true,
+  "Referenced_Event": null,
+  "Version": "1.0"
+}
