@@ -1,0 +1,205 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://plrs.org/schema/event.json",
+  "title": "Public Legal Record System — Event Schema",
+  "description": "Canonical validation schema for PLRS Event records, as defined in SPEC.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "Event_ID": {
+      "type": "string",
+      "pattern": "^E\\d{3,}$",
+      "description": "Unique event identifier (e.g., E001, E1234)."
+    },
+    "Timestamp_UTC": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp in ISO 8601 / RFC 3339 format with optional milliseconds."
+    },
+    "Location_ID": {
+      "type": "string",
+      "pattern": "^L\\d{3,}$",
+      "description": "Location identifier reference (e.g., L001)."
+    },
+    "Subjects_Involved": {
+      "type": "array",
+      "description": "List of Subject_ID values participating in the event.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^S\\d{3,}$"
+      }
+    },
+    "Reporter_ID": {
+      "type": "string",
+      "pattern": "^R\\d{3,}$",
+      "description": "Reporter identifier reference (e.g., R001)."
+    },
+    "Event_Type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Machine-readable event type label (e.g., Visitation_Denial, Report_Filed)."
+    },
+    "Narrative_Statement": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable description of the event, using anonymized references (Child_1, Location_3, etc.)."
+    },
+    "Evidence_Hashes": {
+      "type": "array",
+      "description": "Cryptographic hashes of associated evidence objects. Raw evidence is stored externally.",
+      "minItems": 0,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Fa-f0-9]{32,128}$",
+        "description": "Hex-encoded cryptographic hash (length flexible to allow multiple algorithms)."
+      }
+    },
+    "Public_Visibility": {
+      "type": "boolean",
+      "description": "If true, the event is publicly visible. If false, access restriction must be justified elsewhere."
+    },
+    "Challenge_Window_Days": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 365,
+      "description": "Number of days after creation during which formal challenges may be filed."
+    },
+    "Immutable_Flag": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true for any published record. Represents the immutability requirement from SPEC.md."
+    },
+    "Referenced_Event": {
+      "type": ["string", "null"],
+      "pattern": "^E\\d{3,}$",
+      "description": "Optional reference to another Event_ID (e.g., corrections, challenges). Null if not applicable."
+    },
+    "Version": {
+      "type": "string",
+      "pattern": "^1\\.0$",
+      "description": "Schema/spec version used for this record (starting at 1.0)."
+    }
+  },
+  "required": [
+    "Event_ID",
+    "Timestamp_UTC",
+    "Location_ID",
+    "Subjects_Involved",
+    "Reporter_ID",
+    "Event_Type",
+    "Narrative_Statement",
+    "Evidence_Hashes",
+    "Public_Visibility",
+    "Challenge_Window_Days",
+    "Immutable_Flag"
+  ],
+  "$defs": {
+    "Subject": {
+      "title": "PLRS Subject",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Subject_ID": {
+          "type": "string",
+          "pattern": "^S\\d{3,}$"
+        },
+        "Role": {
+          "type": "string",
+          "enum": [
+            "Child",
+            "Parent",
+            "Reporter",
+            "Witness",
+            "Official",
+            "ThirdParty"
+          ]
+        },
+        "Age_Range": {
+          "type": "string",
+          "pattern": "^\\d{1,2}-\\d{1,2}$",
+          "description": "Non-exact age range (e.g., 8-10).",
+          "nullable": true
+        },
+        "Protected_Status": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "Subject_ID",
+        "Role",
+        "Protected_Status"
+      ]
+    },
+    "Location": {
+      "title": "PLRS Location",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Location_ID": {
+          "type": "string",
+          "pattern": "^L\\d{3,}$"
+        },
+        "Type": {
+          "type": "string",
+          "enum": [
+            "Home",
+            "Office",
+            "School",
+            "Vehicle",
+            "Medical",
+            "Public"
+          ]
+        },
+        "Regional_Code": {
+          "type": "string",
+          "minLength": 1,
+          "description": "City/region-level code (e.g., RIVERSIDE_CA). Exact addresses are prohibited."
+        },
+        "Protected_Location": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "Location_ID",
+        "Type",
+        "Regional_Code",
+        "Protected_Location"
+      ]
+    },
+    "Reporter": {
+      "title": "PLRS Reporter",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Reporter_ID": {
+          "type": "string",
+          "pattern": "^R\\d{3,}$"
+        },
+        "Type": {
+          "type": "string",
+          "enum": [
+            "Civilian",
+            "Legal_Representative",
+            "Medical_Professional",
+            "Agency_Official",
+            "Court_Officer",
+            "Verified_Third_Party"
+          ]
+        },
+        "Verification_Signature": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Opaque, implementation-defined signature or hash binding this reporter to an external verification system."
+        }
+      },
+      "required": [
+        "Reporter_ID",
+        "Type",
+        "Verification_Signature"
+      ]
+    }
+  }
+}
