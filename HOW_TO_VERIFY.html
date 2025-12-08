@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>How to Verify a PLRS Record</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #0b0b0b;
+      color: #e6e6e6;
+      margin: 0;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      color: #ffffff;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+    .box {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    code, pre {
+      background: #000;
+      color: #7CFC99;
+      padding: 0.75rem;
+      border-radius: 4px;
+      overflow-x: auto;
+      display: block;
+      margin-top: 0.5rem;
+    }
+    .warn {
+      color: #ffcc00;
+    }
+    .ok {
+      color: #00ff88;
+    }
+    a {
+      color: #4ea1ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <h1>How to Verify a PLRS Record</h1>
+    <p>
+      This page explains how <strong>any person</strong> can independently verify a
+      Public Legal Record System (PLRS) Event or Challenge using only:
+    </p>
+    <ul>
+      <li>Publicly downloaded files</li>
+      <li>Open verification tools</li>
+      <li>Basic command-line access</li>
+    </ul>
+
+    <div class="box warn">
+      <strong>Important:</strong> You do NOT need to trust the website hosting these files.
+      Verification is based on cryptographic math, not institutional authority.
+    </div>
+
+    <h2>1. What You Need to Download</h2>
+    <div class="box">
+      From the public mirror, download:
+      <ul>
+        <li><code>public_index.json</code></li>
+        <li><code>public_challenge_index.json</code> (if challenges exist)</li>
+        <li>The specific Event file: <code>E###.json</code></li>
+        <li>The specific Challenge file: <code>C###.json</code> (if applicable)</li>
+        <li>The PLRS verification tools package (or source scripts)</li>
+      </ul>
+    </div>
+
+    <h2>2. Verify a Single Event</h2>
+    <div class="box">
+      Run:
+      <pre>python validate_event.py E123.json</pre>
+      <pre>python hash_event.py E123.json</pre>
+
+      You should receive a SHA-256 hash.
+
+      Then confirm that the same hash appears in:
+      <pre>public_index.json</pre>
+
+      If they match:
+      <div class="ok">✅ The Event is authentic and unmodified.</div>
+    </div>
+
+    <h2>3. Verify a Challenge</h2>
+    <div class="box">
+      Run:
+      <pre>python validate_challenge.py C45.json</pre>
+      <pre>python hash_challenge.py C45.json</pre>
+
+      Confirm the resulting hash appears in:
+      <pre>public_challenge_index.json</pre>
+
+      Also confirm that:
+      <pre>Challenged_Event_ID</pre>
+      exists in:
+      <pre>public_index.json</pre>
+
+      If all match:
+      <div class="ok">✅ The Challenge is authentic and properly linked.</div>
+    </div>
+
+    <h2>4. Verify a Court Evidence Bundle</h2>
+    <div class="box">
+      Run:
+      <pre>python verify_bundle.py PLRS_EventBundle_E123.json</pre>
+
+      Or:
+      <pre>python verify_bundle.py PLRS_ChallengeBundle_C45.json</pre>
+
+      If it passes:
+      <div class="ok">✅ The bundle matches both the record and the ledger.</div>
+    </div>
+
+    <h2>5. Verify Chain of Custody</h2>
+    <div class="box">
+      Run:
+      <pre>python verify_chain_of_custody.py PLRS_ChainOfCustody_E123.json</pre>
+
+      This confirms:
+      <ul>
+        <li>Strict time ordering</li>
+        <li>No backdating</li>
+        <li>No broken ownership transfers</li>
+      </ul>
+    </div>
+
+    <h2>6. Verify the Entire Ledger</h2>
+    <div class="box">
+      Run:
+      <pre>
+python verify_ledger_integrity.py \
+  --event-index public_index.json \
+  --challenge-index public_challenge_index.json \
+  --events-dir events \
+  --challenges-dir challenges
+      </pre>
+
+      If this passes:
+      <div class="ok">
+        ✅ The entire PLRS dataset is internally consistent and untampered.
+      </div>
+    </div>
+
+    <h2>7. What Verification Proves</h2>
+    <div class="box">
+      Successful verification proves:
+      <ul>
+        <li>The record has not been edited</li>
+        <li>The timeline has not been altered</li>
+        <li>The ledger has not been pruned</li>
+        <li>Challenges cannot overwrite history</li>
+        <li>Public mirrors cannot falsify records</li>
+      </ul>
+    </div>
+
+    <h2>8. What Verification Does NOT Prove</h2>
+    <div class="box warn">
+      PLRS verification does NOT determine:
+      <ul>
+        <li>Who is morally right</li>
+        <li>Who legally prevails</li>
+        <li>Whether testimony is true</li>
+      </ul>
+      It only proves whether records were altered.
+    </div>
+
+    <h2>9. Why This Matters</h2>
+    <div class="box">
+      In traditional systems:
+      <ul>
+        <li>Records change silently</li>
+        <li>Timelines shift</li>
+        <li>Reports overwrite each other</li>
+        <li>The public cannot verify anything</li>
+      </ul>
+
+      In PLRS:
+      <ul>
+        <li>Every change becomes visible forever</li>
+        <li>Challenges append instead of replace</li>
+        <li>All integrity is independently provable</li>
+      </ul>
+    </div>
+
+    <h2>10. Final Statement</h2>
+    <div class="box">
+      You do not need permission to verify.
+      <br /><br />
+      You do not need to trust the publisher.
+      <br /><br />
+      If the hashes match, the record is real.
+    </div>
+
+  </div>
+</body>
+</html>
