@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Public Legal Record System (PLRS)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #e6e6e6;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    header {
+      background: #000;
+      border-bottom: 1px solid #222;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      color: #ffffff;
+    }
+    .tagline {
+      color: #bbbbbb;
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem 1.5rem;
+    }
+    .box {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    a {
+      color: #4ea1ff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .warn {
+      color: #ffcc00;
+    }
+    .ok {
+      color: #00ff88;
+    }
+    footer {
+      text-align: center;
+      color: #777;
+      font-size: 0.9rem;
+      padding: 2rem 1rem;
+      border-top: 1px solid #222;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Public Legal Record System (PLRS)</h1>
+  <div class="tagline">
+    A public, immutable, independently verifiable legal record system
+  </div>
+</header>
+
+<main>
+
+  <div class="box">
+    <strong>PLRS is not a database.</strong><br />
+    It is a cryptographic public ledger for legal and protective records that
+    replaces silent editing, closed reporting pipelines, and untraceable revisions.
+  </div>
+
+  <div class="box warn">
+    <strong>Important:</strong>  
+    This site is only a mirror. You are not required to trust this website or any
+    institution that hosts it. All records are independently verifiable using
+    open tools and published hashes.
+  </div>
+
+  <h2>What PLRS Does</h2>
+  <div class="box">
+    <ul>
+      <li>Creates immutable legal Event records</li>
+      <li>Allows formal public Challenges without overwriting history</li>
+      <li>Prevents silent edits, backdating, and report laundering</li>
+      <li>Enables court-grade cryptographic verification</li>
+      <li>Allows independent public auditing without permission</li>
+    </ul>
+  </div>
+
+  <h2>Core Public Files</h2>
+  <div class="box">
+    <ul>
+      <li><a href="downloads/data/public_index.json">Event Index (public_index.json)</a></li>
+      <li><a href="downloads/data/public_challenge_index.json">Challenge Index (public_challenge_index.json)</a></li>
+      <li><a href="downloads/data/events/">Event Records (E###.json)</a></li>
+      <li><a href="downloads/data/challenges/">Challenge Records (C###.json)</a></li>
+    </ul>
+  </div>
+
+  <h2>Verification</h2>
+  <div class="box">
+    <p>
+      Anyone can independently prove whether a record has been altered.
+      No accounts. No permission. No trust required.
+    </p>
+    <p>
+      👉 <a href="HOW_TO_VERIFY.html"><strong>How to Verify a PLRS Record</strong></a>
+    </p>
+  </div>
+
+  <h2>System Documentation</h2>
+  <div class="box">
+    <ul>
+      <li><a href="docs/SPEC_public.html">PLRS Specification</a></li>
+      <li><a href="docs/THREAT_MODEL_public.html">Threat Model</a></li>
+      <li><a href="docs/PUBLISHING.html">Publishing & Mirroring</a></li>
+    </ul>
+  </div>
+
+  <h2>What PLRS Does Not Do</h2>
+  <div class="box warn">
+    <ul>
+      <li>It does not determine guilt or innocence</li>
+      <li>It does not replace judges or courts</li>
+      <li>It does not make legal judgments</li>
+      <li>It does not expose identities without consent</li>
+    </ul>
+  </div>
+
+  <h2>Why This Exists</h2>
+  <div class="box">
+    Traditional reporting systems allow:
+    <ul>
+      <li>Silent revisions</li>
+      <li>Timeline manipulation</li>
+      <li>Untraceable report changes</li>
+      <li>Closed review pipelines</li>
+    </ul>
+    <br />
+    PLRS replaces that with:
+    <ul>
+      <li>Append-only public records</li>
+      <li>Cryptographic verification</li>
+      <li>Permanent adversarial history</li>
+      <li>Independent auditability</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  Public Legal Record System (PLRS)<br />
+  Verification belongs to the public, not the publisher.
+</footer>
+
+</body>
+</html>
